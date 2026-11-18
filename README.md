@@ -59,10 +59,4 @@ Cette version ne valide pas de détection radar/caméra, de machine d’états S
 | `results/test_output.txt` | Résultats de console communiqués |
 | `LICENSE` | Licence MIT et attribution d’origine |
 
-## Attribution et licence
-
-Projet initial : **Kaoutar Amid**, [adas-aeb-simulink](https://github.com/KaoutarAmid/adas-aeb-simulink).
-
-Adaptation du modèle FCW et tests : **Hanane Aouragh**.
-
 Licence **MIT** : voir [LICENSE](LICENSE). Les mentions d’origine sont conservées.
