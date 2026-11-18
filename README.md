@@ -59,4 +59,3 @@ Cette version ne valide pas de détection radar/caméra, de machine d’états S
 | `results/test_output.txt` | Résultats de console communiqués |
 | `LICENSE` | Licence MIT et attribution d’origine |
 
-Licence **MIT** : voir [LICENSE](LICENSE). Les mentions d’origine sont conservées.
