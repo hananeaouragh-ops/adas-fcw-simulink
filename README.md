@@ -48,12 +48,4 @@ Les assertions vérifient la sortie d’alerte sur ces cinq scénarios. Elles ne
 
 Cette version ne valide pas de détection radar/caméra, de machine d’états Stateflow explicite, de freinage automatique, de communication CAN, de génération de code, de déploiement STM32 ou de tests sur matériel.
 
-## Fichiers
-
-| Fichier | Contenu |
-|---|---|
-| `fcw_model.slx` | Modèle Simulink fourni par Hanane |
-| `test_fcw_scenarios.m` | Script des cinq scénarios exécutés |
-| `results/test_output.txt` | Résultats de console communiqués |
-| `LICENSE` | Licence MIT et attribution d’origine |
 
