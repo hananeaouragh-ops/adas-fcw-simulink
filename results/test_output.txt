@@ -1,0 +1,8 @@
+Source: MATLAB Online console output supplied by Hanane Aouragh, 2026-11-18.
+
+PASS : Rapprochement | premiere alerte a 1.010 s
+PASS : Meme vitesse | aucune alerte
+PASS : Eloignement | aucune alerte
+PASS : Seuil TTC = 4 s | aucune alerte
+PASS : Alerte des le debut | alerte des t = 0 s
+Les 5 scenarios ont reussi.

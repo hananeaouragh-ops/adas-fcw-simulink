@@ -1,0 +1,106 @@
+mdl = 'fcw_model';
+load_system(mdl);
+
+% vitesse ego, vitesse obstacle, pente, distance initiale
+cas = [20 10 -10 50;
+       20 20   0 50;
+       20 30  10 50;
+       20 10   0 40;
+       20 10   0 30];
+
+noms = {'Rapprochement', ...
+        'Meme vitesse', ...
+        'Eloignement', ...
+        'Seuil TTC = 4 s', ...
+        'Alerte des le debut'};
+
+for k = 1:size(cas, 1)
+    in = Simulink.SimulationInput(mdl);
+
+    in = in.setModelParameter( ...
+        'StartTime', '0', ...
+        'StopTime', '4', ...
+        'ReturnWorkspaceOutputs', 'on');
+
+    in = in.setBlockParameter( ...
+        [mdl '/EgoSpeed_ms'], ...
+        'Value', num2str(cas(k,1)));
+
+    in = in.setBlockParameter( ...
+        [mdl '/ObstacleSpeed_ms'], ...
+        'Value', num2str(cas(k,2)));
+
+    in = in.setBlockParameter( ...
+        [mdl '/Ramp'], ...
+        'slope', num2str(cas(k,3)));
+
+    in = in.setBlockParameter( ...
+        [mdl '/Ramp'], ...
+        'start', '0');
+
+    in = in.setBlockParameter( ...
+        [mdl '/Ramp'], ...
+        'InitialOutput', num2str(cas(k,4)));
+
+    in = in.setBlockParameter( ...
+        [mdl '/To Workspace'], ...
+        'VariableName', 'alerte_log');
+
+    in = in.setBlockParameter( ...
+        [mdl '/To Workspace'], ...
+        'SaveFormat', 'Timeseries');
+
+    out = sim(in);
+
+    signal = out.alerte_log;
+    t = signal.Time(:);
+    y = double(signal.Data(:));
+
+    assert(numel(t) > 1 && abs(t(1)) < 1e-8 ...
+        && t(end) >= 4 - 1e-8, ...
+        'Simulation incomplete');
+
+    assert(all(y == 0 | y == 1), ...
+        'La sortie doit etre 0 ou 1');
+
+    if k == 1
+        % TTC = 5 - t : alerte lorsque t > 1 seconde
+        avant = t < 1 - 1e-8;
+        apres = t > 1 + 1e-8;
+
+        assert(any(avant) && any(apres), ...
+            'Pas assez de points pour verifier le seuil');
+
+        assert(all(y(avant) == 0), ...
+            'Alerte trop tot');
+
+        assert(all(y(apres) == 1), ...
+            'Alerte absente ou tardive');
+
+        idx = find(y == 1, 1);
+
+        fprintf('PASS : %s | premiere alerte a %.3f s\n', ...
+            noms{k}, t(idx));
+
+    elseif k == 5
+        % Test isole : distance constante de 30 m.
+        % TTC = 30 / (20 - 10) = 3 secondes.
+        assert(y(1) == 1, ...
+            'Alerte absente au debut');
+
+        assert(all(y == 1), ...
+            'Alerte interrompue');
+
+        fprintf('PASS : %s | alerte des t = 0 s\n', ...
+            noms{k});
+
+    else
+        % Cas 4 : test isole du seuil, TTC constant = 4 s.
+        assert(all(y == 0), ...
+            'Fausse alerte');
+
+        fprintf('PASS : %s | aucune alerte\n', noms{k});
+    end
+end
+
+fprintf('Les %d scenarios ont reussi.\n', size(cas, 1));
