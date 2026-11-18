@@ -2,8 +2,6 @@
 
 Modélisation et vérification en simulation d’une fonction d’alerte de collision frontale, avec MATLAB/Simulink.
 
-**Adaptation : Hanane Aouragh.** Travail basé sur le [projet initial de Kaoutar Amid](https://github.com/KaoutarAmid/adas-aeb-simulink), sous licence MIT. Cette version documente la fonction FCW effectivement testée.
-
 ## Fonctionnement
 
 Le modèle `fcw_model.slx` reçoit la distance (m), la vitesse du véhicule égo (m/s) et celle du véhicule devant lui (m/s).
